@@ -1,14 +1,19 @@
 package com.springframework.springfundamental.controller;
 
+import com.springframework.springfundamental.dto.KeyboardRecord;
 import com.springframework.springfundamental.entity.Keyboard;
 import com.springframework.springfundamental.service.KeyboardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,26 +40,41 @@ public class KeyboardController {
         return keyboardService.getAllKeyboard();
     }
 
-    @GetMapping(value = "/:id")
-    public String getKeyboardById(){
-        return "GET KeyboardById ";
+    //getKeyboardById
+    @GetMapping(value = "/path/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Keyboard getKeyboardByIdWithPathVariable(@PathVariable("id") String id){
+        return keyboardService.getKeyboardById(id);
     }
 
+    @GetMapping(value = "/req")
+    @ResponseStatus(HttpStatus.OK)
+    public Keyboard getKeyboardByIdWithRequestParam(@RequestParam("id") String id){
+        return keyboardService.getKeyboardById(id);
+    }
+
+    //Post
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED) //201 Created และ ResponseStatus คือการระบุบ HttpStatus ในกรณีที่ส่งสำเร็จ
-    public String postKeyboard(){
-        return "POST Keyboard";
+    public Keyboard postKeyboard(@Valid @RequestBody KeyboardRecord keyboardRequest){
+        //@Valid ใส่เมื่อต้องการใช้งาน validation ตามที่กำหนดใน KeyboardRecord
+        //Statement
+        return keyboardService.saveKeyboardVB(keyboardRequest);
     }
 
+    //PUT
     @PutMapping(value = "")
-    public String putKeyboard(){
-        return "PUT Keyboard";
+    @ResponseStatus(HttpStatus.OK)
+    public Keyboard putKeyboard(@Valid @PathVariable("id") String id, @RequestBody KeyboardRecord request){
+        return keyboardService.updateKeyboard(id, request);
     }
 
+    //DELETE
     @DeleteMapping(value = "")
     @ResponseStatus(HttpStatus.NO_CONTENT) //204 No Content
-    public void deleteKeyboard(){
+    public void deleteKeyboard(@PathVariable("id") String id){
         // status ถ้าใช้งาน HttpStatus.NO_CONTENT แม้จะใช้ข้อความไปใน method ก็จะออกมาเฉพาะ HttpStatus
+        keyboardService.deleteKeyboard(id);
     }
 
 //    @PutMapping(value = "/2")
