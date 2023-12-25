@@ -1,6 +1,7 @@
 package com.springframework.springfundamental.controller;
 
-import com.springframework.springfundamental.dto.KeyboardRecord;
+import com.springframework.springfundamental.dto.keyboard.PostKeyboardRecord;
+import com.springframework.springfundamental.dto.keyboard.PutKeyboardRecord;
 import com.springframework.springfundamental.entity.Keyboard;
 import com.springframework.springfundamental.service.KeyboardService;
 import jakarta.validation.Valid;
@@ -56,21 +57,21 @@ public class KeyboardController {
     //Post
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED) //201 Created และ ResponseStatus คือการระบุบ HttpStatus ในกรณีที่ส่งสำเร็จ
-    public Keyboard postKeyboard(@Valid @RequestBody KeyboardRecord keyboardRequest){
+    public Keyboard postKeyboard(@Valid @RequestBody PostKeyboardRecord keyboardRequest){
         //@Valid ใส่เมื่อต้องการใช้งาน validation ตามที่กำหนดใน KeyboardRecord
         //Statement
         return keyboardService.saveKeyboardVB(keyboardRequest);
     }
 
     //PUT
-    @PutMapping(value = "")
+    @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Keyboard putKeyboard(@Valid @PathVariable("id") String id, @RequestBody KeyboardRecord request){
+    public Keyboard putKeyboard(@Valid @PathVariable("id") String id, @RequestBody PutKeyboardRecord request){
         return keyboardService.updateKeyboard(id, request);
     }
 
     //DELETE
-    @DeleteMapping(value = "")
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT) //204 No Content
     public void deleteKeyboard(@PathVariable("id") String id){
         // status ถ้าใช้งาน HttpStatus.NO_CONTENT แม้จะใช้ข้อความไปใน method ก็จะออกมาเฉพาะ HttpStatus

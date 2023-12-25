@@ -1,4 +1,4 @@
-package com.springframework.springfundamental.dto;
+package com.springframework.springfundamental.dto.keyboard;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -14,5 +14,8 @@ INSERT INTO users (id, email, password, name, create_timestamp, last_updated_tim
 VALUES(gen_random_uuid(),'ghostet360@gmail.com','123456789','earth',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
 
 9dfc722b-2275-49d7-8c14-364979fefc51 users
+ghostet360@gmail.com
+123456789
+earth
 
 ff909e36-c23f-4865-8a33-f1aa53047e52 category
