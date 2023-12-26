@@ -3,11 +3,11 @@ package com.springframework.springfundamental.dto.keyboard;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.UUID;
 
-public record PostKeyboardRecord(
+public record PostKeyboardRequest(
         @NotNull
-        @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+        @UUID
         String categoryId,
 
         @NotNull
@@ -23,7 +23,7 @@ public record PostKeyboardRecord(
         Double price,
 
         @NotNull //validation
-        @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+        @UUID
         String lastOpId
 ) {
 }

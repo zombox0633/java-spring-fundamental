@@ -1,7 +1,7 @@
 package com.springframework.springfundamental.service;
 
 import com.springframework.springfundamental.constants.ErrorMessage;
-import com.springframework.springfundamental.dto.CategoryRecord;
+import com.springframework.springfundamental.dto.CategoryRequest;
 import com.springframework.springfundamental.entity.Category;
 import com.springframework.springfundamental.exception.NotFoundException;
 import com.springframework.springfundamental.repository.CategoryRepository;
@@ -23,7 +23,7 @@ public class CategoryService {
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.NOT_FOUND.formatted("Category")));
     }
 
-    public Category saveCategory(CategoryRecord request){
+    public Category saveCategory(CategoryRequest request){
 
         var category = new Category();
         category.setName(request.name());
@@ -33,7 +33,7 @@ public class CategoryService {
         return category;
     }
 
-    public Category updateCategory(String id,CategoryRecord request){
+    public Category updateCategory(String id, CategoryRequest request){
         var existingCategory = getCategoryById(id);
         existingCategory.setName(request.name());
         existingCategory.setLastOpId(UUID.fromString(request.lastOpId()));

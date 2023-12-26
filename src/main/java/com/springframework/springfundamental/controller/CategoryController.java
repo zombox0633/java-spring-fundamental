@@ -1,6 +1,6 @@
 package com.springframework.springfundamental.controller;
 
-import com.springframework.springfundamental.dto.CategoryRecord;
+import com.springframework.springfundamental.dto.CategoryRequest;
 import com.springframework.springfundamental.entity.Category;
 import com.springframework.springfundamental.service.CategoryService;
 import jakarta.validation.Valid;
@@ -35,13 +35,13 @@ public class CategoryController {
 
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public Category createCategory(@Valid @RequestBody CategoryRecord request){
+    public Category createCategory(@Valid @RequestBody CategoryRequest request){
         return categoryService.saveCategory(request);
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Category updateCategory(@Valid @PathVariable("id") String id, @RequestBody CategoryRecord request){
+    public Category updateCategory(@Valid @PathVariable("id") String id, @RequestBody CategoryRequest request){
         return categoryService.updateCategory(id, request);
     }
 

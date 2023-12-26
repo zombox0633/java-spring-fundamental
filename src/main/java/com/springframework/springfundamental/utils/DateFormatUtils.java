@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateFormatUtils {
 
-    private static final String DATE_FORMAT = "dd-MM-yyyy";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     public static LocalDate stringToLocalDate(String date) {
         var formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);

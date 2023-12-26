@@ -1,9 +1,9 @@
 package com.springframework.springfundamental.service;
 
 import com.springframework.springfundamental.constants.ErrorMessage;
-import com.springframework.springfundamental.dto.keyboard.PostKeyboardRecord;
+import com.springframework.springfundamental.dto.keyboard.PostKeyboardRequest;
 import com.springframework.springfundamental.dto.keyboard.KeyboardRequest;
-import com.springframework.springfundamental.dto.keyboard.PutKeyboardRecord;
+import com.springframework.springfundamental.dto.keyboard.PutKeyboardRequest;
 import com.springframework.springfundamental.entity.Keyboard;
 import com.springframework.springfundamental.exception.NotFoundException;
 import com.springframework.springfundamental.repository.KeyboardRepository;
@@ -54,7 +54,7 @@ public class KeyboardService {
     }
 
     // แบบใช้ Record
-    public Keyboard saveKeyboardVB(PostKeyboardRecord request){
+    public Keyboard saveKeyboardVB(PostKeyboardRequest request){
 
         var keyboard = new Keyboard();
         keyboard.setCategoryId(UUID.fromString(request.categoryId()));
@@ -68,13 +68,20 @@ public class KeyboardService {
     }
 
     //PUT
-    public Keyboard updateKeyboard(String id, PutKeyboardRecord request){
-
+    public Keyboard updateKeyboard(String id, PutKeyboardRequest request){
         var existingKeyboard = getKeyboardById(id);
-        existingKeyboard.setCategoryId(UUID.fromString(request.categoryId()));
-        existingKeyboard.setName(request.name());
+
+        if(request.categoryId() != null){
+            existingKeyboard.setCategoryId(UUID.fromString(request.categoryId()));
+        }
+        if(request.name() != null){
+            existingKeyboard.setName(request.name());
+        }
+        if(request.price() != null){
+            existingKeyboard.setPrice(BigDecimal.valueOf(request.price()));
+        }
+
         existingKeyboard.setQuantity(request.quantity());
-        existingKeyboard.setPrice(BigDecimal.valueOf(request.price()));
         existingKeyboard.setLastOpId(UUID.fromString(request.lastOpId()));
 
         keyboardRepository.save(existingKeyboard);

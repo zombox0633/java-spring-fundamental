@@ -1,14 +1,14 @@
 package com.springframework.springfundamental.dto;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.UUID;
 
-public record CategoryRecord(
+public record CategoryRequest(
         @NotNull
         String name,
 
         @NotNull
-        @Pattern(regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+        @UUID
         String lastOpId
 ) {
 }

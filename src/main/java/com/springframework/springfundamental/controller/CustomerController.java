@@ -1,6 +1,6 @@
 package com.springframework.springfundamental.controller;
 
-import com.springframework.springfundamental.dto.customer.PostCustomerRecord;
+import com.springframework.springfundamental.dto.customer.PostCustomerRequest;
 import com.springframework.springfundamental.entity.Customer;
 import com.springframework.springfundamental.service.CustomerService;
 import jakarta.validation.Valid;
@@ -29,7 +29,7 @@ public class CustomerController {
 
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer createCustomer(@Valid @RequestBody PostCustomerRecord request){
+    public Customer createCustomer(@Valid @RequestBody PostCustomerRequest request){
         return customerService.saveCustomer(request);
     }
 }
