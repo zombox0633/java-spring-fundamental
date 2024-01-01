@@ -4,6 +4,8 @@ import com.springframework.springfundamental.dto.keyboard.PostKeyboardRequest;
 import com.springframework.springfundamental.dto.keyboard.PutKeyboardRequest;
 import com.springframework.springfundamental.entity.Keyboard;
 import com.springframework.springfundamental.service.KeyboardService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import java.util.List;
 @RestController // การกำหนดคลาสเพื่อใช้งานเป็น Controller ในรูปแบบของ REST API และ  จะส่งข้อมูลกลับเป็นรูปแบบของ JSON หรือ XML
 @RequestMapping(value = "v1/keyboard") // ใช้กำหนด path หรือ URL สำหรับ mapping การร้องขอ (requests) ใน RESTful web service
 @RequiredArgsConstructor // import ในรูปแบบใหม่
+@Tag(name = "Keyboard", description = "APIs for managing keyboard data.")
 public class KeyboardController {
 
     /*@Autowired  //import แบบเก่า ในรูปแบบ java
@@ -37,6 +40,9 @@ public class KeyboardController {
 //    }
 
     @GetMapping(value = "")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Retrieve All Keyboard Data",
+            description = "Returns a list of all keyboards available in the system.")
     public List<Keyboard> getKeyboard(){
         return keyboardService.getAllKeyboard();
     }
@@ -44,19 +50,30 @@ public class KeyboardController {
     //getKeyboardById
     @GetMapping(value = "/path/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Retrieve Keyboard Data by Id",
+            description = "Returns keyboard data for the specified Id.")
     public Keyboard getKeyboardByIdWithPathVariable(@PathVariable("id") String id){
+        //http://localhost:8080/v1/keyboard/path/d1e981f6-d886-4a4f-9676-3e11c8b38a98
+        //ใช้เมื่อต้องการดึงค่าที่ไม่จำเป็นต้องเป็นส่วนหนึ่งของ path ของ URL, เหมาะสำหรับการส่งข้อมูลที่ไม่เป็นส่วนความลับหรือไม่มีความสำคัญเชิงโครง
+
         return keyboardService.getKeyboardById(id);
     }
 
     @GetMapping(value = "/req")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Retrieve Keyboard Data by ID (Using Request Param)",
+            description = "Returns keyboard data for the specified ID using request parameters.")
     public Keyboard getKeyboardByIdWithRequestParam(@RequestParam("id") String id){
+        //http://localhost:8080/v1/keyboard/req?id=d1e981f6-d886-4a4f-9676-3e11c8b38a98
+        //ใช้เมื่อต้องการดึงค่าที่เป็นส่วนหนึ่งของ URI path และมีความสำคัญต่อโครงสร้าง
+
         return keyboardService.getKeyboardById(id);
     }
 
     //Post
     @PostMapping(value = "")
     @ResponseStatus(HttpStatus.CREATED) //201 Created และ ResponseStatus คือการระบุบ HttpStatus ในกรณีที่ส่งสำเร็จ
+    @Operation(summary = "Add New Keyboard Data", description = "Creates and saves new keyboard data in the system.")
     public Keyboard postKeyboard(@Valid @RequestBody PostKeyboardRequest keyboardRequest){
         //@Valid ใส่เมื่อต้องการใช้งาน validation ตามที่กำหนดใน KeyboardRecord
         //Statement
@@ -66,6 +83,7 @@ public class KeyboardController {
     //PUT
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Update Keyboard Data", description = "Updates keyboard data for the specified ID.")
     public Keyboard putKeyboard(@Valid @PathVariable("id") String id, @RequestBody PutKeyboardRequest request){
         return keyboardService.updateKeyboard(id, request);
     }
@@ -73,6 +91,8 @@ public class KeyboardController {
     //DELETE
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT) //204 No Content
+    @Operation(summary = "Delete Keyboard Data",
+            description = "Deletes keyboard data from the system based on the specified ID.")
     public void deleteKeyboard(@PathVariable("id") String id){
         // status ถ้าใช้งาน HttpStatus.NO_CONTENT แม้จะใช้ข้อความไปใน method ก็จะออกมาเฉพาะ HttpStatus
         keyboardService.deleteKeyboard(id);

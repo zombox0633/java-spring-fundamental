@@ -9,6 +9,7 @@ import com.springframework.springfundamental.repository.CustomerRepository;
 import com.springframework.springfundamental.utils.DateFormatUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
+
     private final CustomerRepository customerRepository;
 
     //GET BY ID
@@ -35,6 +37,9 @@ public class CustomerService {
             // Validate pre-requisite
             log.info("Create user with username: {}", request.email());
             validateCustomer(request);
+
+            //hashPassword
+            var hashPassword = BCrypt.hashpw(request.password(), BCrypt.gensalt());
 
             // Create user
             var customer = new Customer();
