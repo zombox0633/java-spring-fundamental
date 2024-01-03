@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j //  ทำหน้าที่เรียกการใช้งาน logging และ สร้าง object สำหรับ log
@@ -23,6 +24,8 @@ import java.util.UUID;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+
+    public List<Customer> getCustomers(){ return customerRepository.findAll();}
 
     //GET BY ID
     public Customer getCustomerById(String id){
@@ -44,7 +47,7 @@ public class CustomerService {
             // Create user
             var customer = new Customer();
             customer.setEmail(request.email());
-            customer.setPassword(request.password());
+            customer.setPassword(hashPassword);
             customer.setName(request.name());
             customer.setBirthday(Date.valueOf(request.birthday()));
 
