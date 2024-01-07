@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface KeyboardRepository extends JpaRepository<Keyboard, UUID> {
     List<Keyboard> findAll();
+
 }

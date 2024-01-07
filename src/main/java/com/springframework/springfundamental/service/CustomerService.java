@@ -52,9 +52,13 @@ public class CustomerService {
             customer.setBirthday(Date.valueOf(request.birthday()));
 
             return customerRepository.save(customer);
+
         }catch (InvalidException e){
             log.error("Invalid request: {}", e.getMessage(), e);
             throw e;
+        }catch (Exception e){
+            log.error("Failed to create user: {}", e.getMessage(), e);
+            throw new InvalidException("Failed to create user");
         }
     }
 
