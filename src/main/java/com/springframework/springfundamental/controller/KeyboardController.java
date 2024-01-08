@@ -39,6 +39,7 @@ public class KeyboardController {
 //        return "Keyboard";
 //    }
 
+    //GET
     @GetMapping(value = "")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Retrieve All Keyboard Data",
@@ -47,7 +48,35 @@ public class KeyboardController {
         return keyboardService.getAllKeyboard();
     }
 
-    //getKeyboardById
+    //GET Pagination
+    /*@GetMapping(value = "/pagination")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all keyboard with pagination",description = "Get all keyboard in table with pagination")
+    public List<Keyboard> getAllKeyboardWithPagination(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam(value = "sort", defaultValue = "name") String sort,
+            @RequestParam(value = "order", defaultValue = "asc") String order
+    ){
+        //{{localhost}}/v1/keyboard/pagination?page=1&size=8&sort=name&order=asc
+        return keyboardService.getAllKeyboardWithPagination(page, size, sort, order);
+    }*/
+
+    @GetMapping(value = "/pagination")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all keyboard with pagination",description = "Get all keyboard in table with pagination")
+    public List<Keyboard> getAllKeyboardWithPagination(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam(value = "sort", defaultValue = "name") String[] sort,
+            @RequestParam(value = "order", defaultValue = "asc") String order
+    ){
+        //"Method Overloading
+        //{{localhost}}/v1/keyboard/pagination?page=1&size=8&sort=name,price,quantity&order=asc
+        return keyboardService.getAllKeyboardWithPagination(page, size, sort, order);
+    }
+
+    //GET KeyboardById
     @GetMapping(value = "/path/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Retrieve Keyboard Data by Id",
