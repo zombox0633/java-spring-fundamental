@@ -1,5 +1,6 @@
 package com.springframework.springfundamental.controller;
 
+import com.springframework.springfundamental.dto.keyboard.KeyboardSearch;
 import com.springframework.springfundamental.dto.keyboard.PostKeyboardRequest;
 import com.springframework.springfundamental.dto.keyboard.PutKeyboardRequest;
 import com.springframework.springfundamental.entity.Keyboard;
@@ -49,18 +50,18 @@ public class KeyboardController {
     }
 
     //GET Pagination
-    /*@GetMapping(value = "/pagination")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all keyboard with pagination",description = "Get all keyboard in table with pagination")
-    public List<Keyboard> getAllKeyboardWithPagination(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size,
-            @RequestParam(value = "sort", defaultValue = "name") String sort,
-            @RequestParam(value = "order", defaultValue = "asc") String order
-    ){
-        //{{localhost}}/v1/keyboard/pagination?page=1&size=8&sort=name&order=asc
-        return keyboardService.getAllKeyboardWithPagination(page, size, sort, order);
-    }*/
+//    @GetMapping(value = "/pagination")
+//    @ResponseStatus(HttpStatus.OK)
+//    @Operation(summary = "Get all keyboard with pagination",description = "Get all keyboard in table with pagination")
+//    public List<Keyboard> getAllKeyboardWithPagination(
+//            @RequestParam("page") int page,
+//            @RequestParam("size") int size,
+//            @RequestParam(value = "sort", defaultValue = "name") String sort,
+//            @RequestParam(value = "order", defaultValue = "asc") String order
+//    ){
+//        //{{localhost}}/v1/keyboard/pagination?page=1&size=8&sort=name&order=asc
+//        return keyboardService.getAllKeyboardWithPagination(page, size, sort, order);
+//    }
 
     @GetMapping(value = "/pagination")
     @ResponseStatus(HttpStatus.OK)
@@ -74,6 +75,14 @@ public class KeyboardController {
         //"Method Overloading
         //{{localhost}}/v1/keyboard/pagination?page=1&size=8&sort=name,price,quantity&order=asc
         return keyboardService.getAllKeyboardWithPagination(page, size, sort, order);
+    }
+
+    //dynamic search
+    @PostMapping(value = "/search")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all keyboard with filter", description = "Get all keyboard in table with filter")
+    public List<Keyboard> getAllKeyboardWithFilter(@RequestBody KeyboardSearch keyboardSearch){
+        return keyboardService.getAllKeyboardWithSearch(keyboardSearch);
     }
 
     //GET KeyboardById
