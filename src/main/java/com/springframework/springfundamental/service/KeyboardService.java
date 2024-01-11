@@ -3,6 +3,7 @@ package com.springframework.springfundamental.service;
 import com.springframework.springfundamental.constants.ErrorMessage;
 import com.springframework.springfundamental.dto.keyboard.KeyboardRequest;
 import com.springframework.springfundamental.dto.keyboard.KeyboardSearch;
+import com.springframework.springfundamental.dto.keyboard.KeyboardSearchCriteria;
 import com.springframework.springfundamental.dto.keyboard.PostKeyboardRequest;
 import com.springframework.springfundamental.dto.keyboard.PutKeyboardRequest;
 import com.springframework.springfundamental.entity.Keyboard;
@@ -12,6 +13,7 @@ import com.springframework.springfundamental.repository.KeyboardRepository;
 import com.springframework.springfundamental.repository.KeyboardSpecification;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -106,7 +108,47 @@ public class KeyboardService {
     }
 
     //GET Pagination + dynamic search
+    private Pageable createPageable(int page, int size, String sortBy, String order){
+        Pageable pageable;
 
+        //Setup default page and size value
+        page = page <= 0 ? 1 : page -1;
+        size = size <= 0 ? 10 : size;
+
+        if(StringUtils.isAllBlank(sortBy)){
+            // Setup order direction
+            var orderBy = StringUtils.isBlank(order) ? Sort.Direction.ASC : Sort.Direction.valueOf(order.toUpperCase());
+
+            //Validate sort by specific column
+            if (!isSortByValid(sortBy)){
+                throw new InvalidException(INVALID_SORT_BY.formatted(sortBy));
+            }
+
+            pageable = PageRequest.of(page, size, orderBy, sortBy);
+        }else {
+            pageable = PageRequest.of(page, size);
+        }
+
+        return pageable;
+    }
+    private Specification<Keyboard> createSpecification(KeyboardSearch keyboardSearch) {
+        return Specification
+                .where(keyboardSpecification.nameSpec(keyboardSearch.name()))
+                .and(keyboardSpecification.quantitySpec(keyboardSearch.quantity()))
+                .and(keyboardSpecification.priceSpec(keyboardSearch.priceMin(), keyboardSearch.priceMax()));
+    }
+
+    public Page<Keyboard> getAllKeyboardsWithSearchAndPagination(
+            KeyboardSearchCriteria keyboardSearch){
+
+        var pageable = createPageable(keyboardSearch.page(),
+                keyboardSearch.size(),
+                keyboardSearch.sort(),
+                keyboardSearch.order());
+        var spec = createSpecification(keyboardSearch.keyboardSearch());
+
+        return  keyboardRepository.findAll(spec,pageable);
+    }
 
     //GET BY ID
     public Keyboard getKeyboardById(String id){

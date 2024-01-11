@@ -1,6 +1,7 @@
 package com.springframework.springfundamental.controller;
 
 import com.springframework.springfundamental.dto.keyboard.KeyboardSearch;
+import com.springframework.springfundamental.dto.keyboard.KeyboardSearchCriteria;
 import com.springframework.springfundamental.dto.keyboard.PostKeyboardRequest;
 import com.springframework.springfundamental.dto.keyboard.PutKeyboardRequest;
 import com.springframework.springfundamental.entity.Keyboard;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,12 +79,23 @@ public class KeyboardController {
         return keyboardService.getAllKeyboardWithPagination(page, size, sort, order);
     }
 
-    //dynamic search
+    //Pagination + dynamic search
     @PostMapping(value = "/search")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all keyboard with filter", description = "Get all keyboard in table with filter")
     public List<Keyboard> getAllKeyboardWithFilter(@RequestBody KeyboardSearch keyboardSearch){
         return keyboardService.getAllKeyboardWithSearch(keyboardSearch);
+    }
+
+    //Pagination + dynamic search
+    @PostMapping(value = "/sap")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Search and Paginate Keyboards",
+            description = "Retrieve a page of keyboards with optional search criteria.")
+    public Page<Keyboard> getAllKeyboardsWithSAP(
+            @RequestBody KeyboardSearchCriteria keyboardSearchCriteria
+            ){
+        return keyboardService.getAllKeyboardsWithSearchAndPagination(keyboardSearchCriteria);
     }
 
     //GET KeyboardById
